@@ -400,9 +400,16 @@ class mysql::params {
     }
   }
 
+  # file { '/tmp/determine_init_system.sh':
+  #   ensure => present,
+  #   source => 'puppet:///modules/mysql/tmp/determine_init_system.sh',
+  #   mode   => '0775',
+  # }->
+
   case $facts['os']['name'] {
     'Ubuntu': {
-      $server_service_provider = 'systemd'
+      # $server_service_provider = 'systemd'
+      $server_service_provider = $facts['actual_init_system'] 
     }
     'Alpine': {
       $server_service_provider = 'rc-service'
